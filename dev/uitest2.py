@@ -123,15 +123,22 @@ check("未知语言回退英文", i18n.current_language() == "en")
 i18n.set_language("zh")
 dlg = AboutDialog(win2)
 check("关于窗口可构建", dlg is not None and dlg.windowTitle() == "关于", dlg.windowTitle())
-check("未配置仓库时按钮禁用", not dlg.btn_update.isEnabled() and not dlg.btn_gh.isEnabled())
-os.environ["APPDATA"], old = os.environ["APPDATA"], os.environ["APPDATA"]
-from renamer.core.config import load_config, save_config, CONFIG_PATH
+import renamer.meta as _meta
+from renamer.core.config import save_config
+save_config({})
+check("默认仓库来自 meta", github_repo() == _meta.GITHUB_REPO, github_repo())
+check("默认仓库时按钮可用", dlg.btn_update.isEnabled() and dlg.btn_gh.isEnabled())
 save_config({"github_repo": "someone/batch-renamer"})
 check("config 可覆盖仓库", github_repo() == "someone/batch-renamer", github_repo())
 dlg2 = AboutDialog(win2)
-check("配好仓库后按钮可用", dlg2.btn_update.isEnabled() and dlg2.btn_gh.isEnabled())
+check("覆盖后按钮仍可用", dlg2.btn_update.isEnabled() and dlg2.btn_gh.isEnabled())
 save_config({})
-dlg.close(); dlg2.close()
+_old_repo = _meta.GITHUB_REPO
+_meta.GITHUB_REPO = ""
+dlg3 = AboutDialog(win2)
+check("仓库为空时按钮禁用", not dlg3.btn_update.isEnabled() and not dlg3.btn_gh.isEnabled())
+_meta.GITHUB_REPO = _old_repo
+dlg.close(); dlg2.close(); dlg3.close()
 
 # ---------- 7. 目录树内边距
 wrap = win2.dir_panel.view.parentWidget()
@@ -172,6 +179,19 @@ check("新窗口自动恢复上次规则",
       [c.rule.type for c in win4.rule_panel.cards] == ["replace"],
       [c.rule.type for c in win4.rule_panel.cards])
 win4.close()
+
+# ---------- 9.5 启动默认落在桌面
+from renamer.resources import desktop_dir
+QSettings('Renamivo', 'Renamivo').clear()
+win5 = MainWindow()
+app.processEvents()
+check("启动默认打开桌面", win5.current_dir == desktop_dir(), win5.current_dir)
+idx = win5.dir_panel.view.currentIndex()
+check("目录树也定位到桌面",
+      idx.isValid() and win5.dir_panel.fs.filePath(idx).replace("\\", "/") == desktop_dir().replace("\\", "/"),
+      win5.dir_panel.fs.filePath(idx) if idx.isValid() else "(none)")
+check("齿轮图标比按钮小一圈", win5.btn_help.iconSize().width() == 20, win5.btn_help.iconSize().width())
+win5.close()
 
 # ---------- 10. Qt 自带文案已中文化
 from PySide6.QtCore import QCoreApplication

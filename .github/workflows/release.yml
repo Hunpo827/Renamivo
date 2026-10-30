@@ -47,5 +47,6 @@ jobs:
           files: dist/Renamivo-Single.exe
           name: Renamivo ${{ github.ref_name }}
           body_path: packaging/release-notes.md
+          generate_release_notes: true
           draft: false
           make_latest: true

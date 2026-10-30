@@ -1,4 +1,4 @@
-## Renamivo v1.3.0 — batch file renamer for Windows
+## Renamivo — batch file renamer for Windows
 
 Pick a folder, stack rules, watch the live `old → new` preview, then apply. Nothing is written until
 you confirm, and every batch can be undone.
@@ -20,7 +20,7 @@ anyway"); systems with Smart Control enabled may block it entirely — run from 
 
 ---
 
-## 易名匣 / Renamivo v1.3.0
+## 易名匣 / Renamivo
 
 Windows 批量文件改名工具：先预览、后执行、随时撤销。
 

@@ -25,7 +25,7 @@ from ..core.scanner import scan
 from ..core.validator import (STATUS_CONFLICT, STATUS_INVALID, STATUS_OK,
                               evaluate)
 from ..i18n import LANG_AUTO, LANGUAGES, current_language, resolve_language, set_language, tr
-from ..resources import app_dir, resource
+from ..resources import desktop_dir, resource
 from .icons import icon
 from .dialogs import AboutDialog, show_rename_result
 from .models import (COL_CHECK, COL_DIR, COL_MTIME, COL_NAME, COL_NEW, COL_SIZE,
@@ -121,6 +121,14 @@ class DirPanel(QWidget):
             self.view.expand(p)
         self.view.setCurrentIndex(idx)
         self.view.scrollTo(idx, QAbstractItemView.PositionAtCenter)
+        # 子项是异步加载的，展开后立刻 scrollTo 往往还看不到，稍后再补一次
+        for delay in (60, 250, 600):
+            QTimer.singleShot(delay, self._ensure_visible)
+
+    def _ensure_visible(self) -> None:
+        idx = self.view.currentIndex()
+        if idx.isValid():
+            self.view.scrollTo(idx, QAbstractItemView.PositionAtCenter)
 
 
 # ==================================================================== 文件列表
@@ -361,11 +369,8 @@ class MainWindow(QMainWindow):
         self._restore_geometry()
         self._restore_last_rules()
 
-        last = start_dir or (self.settings.value("last_dir", "") or "")
-        start = last if last and os.path.isdir(last) else app_dir()
-        if not os.path.isdir(start):
-            start = os.path.expanduser("~")
-        QTimer.singleShot(0, lambda: self.open_dir(start))
+        start = start_dir if start_dir and os.path.isdir(start_dir) else desktop_dir()
+        QTimer.singleShot(0, lambda: self._goto_initial(start))
 
     # ---------------------------------------------------------- 布局
     def _build_ui(self) -> None:
@@ -416,7 +421,7 @@ class MainWindow(QMainWindow):
 
         self.btn_help = QToolButton()
         self.btn_help.setIcon(icon("gear"))
-        self.btn_help.setIconSize(QSize(16, 16))
+        self.btn_help.setIconSize(QSize(20, 20))
         self.btn_help.setFixedSize(32, 30)
         self.btn_help.setToolTip(tr("设置"))
         # 用 clicked 手动弹出菜单：InstantPopup 会在按钮右下角挤一个小箭头，
@@ -551,6 +556,11 @@ class MainWindow(QMainWindow):
             self.dir_panel.select_path(parent)
             self.open_dir(parent)
 
+    def _goto_initial(self, path: str) -> None:
+        """启动时落到桌面：文件列表和左侧目录树都定位过去。"""
+        self.dir_panel.select_path(path)
+        self.open_dir(path)
+
     def open_dir(self, path: str) -> None:
         path = os.path.abspath(path)
         if not os.path.isdir(path):
@@ -576,7 +586,6 @@ class MainWindow(QMainWindow):
         self.model.set_items(items)
         self.file_panel.view.setColumnHidden(COL_DIR, not fp.chk_recursive.isChecked())
         fp.refresh_types(items)
-        self.settings.setValue("last_dir", self.current_dir)
         self.settings.setValue("opt_recursive", fp.chk_recursive.isChecked())
         self.settings.setValue("opt_dirs", fp.chk_dirs.isChecked())
         self.settings.setValue("opt_hidden", fp.chk_hidden.isChecked())

@@ -14,8 +14,20 @@ def resource(rel: str) -> str:
     return os.path.join(root, rel)
 
 
-def app_dir() -> str:
-    """程序所在目录：打包后是 exe 所在文件夹，源码运行时是项目根目录。"""
-    if getattr(sys, "frozen", False):
-        return os.path.dirname(os.path.abspath(sys.executable))
-    return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+def desktop_dir() -> str:
+    """当前用户的桌面目录。用系统 API 取，OneDrive 重定向过的桌面也能拿到。"""
+    if sys.platform == "win32":
+        try:
+            import ctypes
+            buf = ctypes.create_unicode_buffer(260)
+            # CSIDL_DESKTOPDIRECTORY = 0x10
+            ctypes.windll.shell32.SHGetFolderPathW(None, 0x0010, None, 0, buf)
+            if buf.value and os.path.isdir(buf.value):
+                return buf.value
+        except Exception:
+            pass
+    for cand in (os.path.join(os.path.expanduser("~"), "Desktop"),
+                 os.path.join(os.path.expanduser("~"), "桌面")):
+        if os.path.isdir(cand):
+            return cand
+    return os.path.expanduser("~")
