@@ -130,8 +130,9 @@ _EN: dict[str, str] = {
     "清空": "Clear",
     "存为预设": "Save preset",
     "存为规则组": "Save as group",
-    "规则组 ▾": "Groups ▾",
-    "规则组": "Rule groups",
+
+    "规则组": "Groups",
+    "载入或删除保存过的规则组": "Load or delete a saved group",
     "把规则存下来，下次一键载入": "Save this rule set to reload later",
     "把这组规则存下来，下次一键载入": "Save this rule set to reload later",
     "给这组规则起个名字，下次从「规则组」里一键载入：":
