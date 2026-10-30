@@ -190,7 +190,12 @@ idx = win5.dir_panel.view.currentIndex()
 check("目录树也定位到桌面",
       idx.isValid() and win5.dir_panel.fs.filePath(idx).replace("\\", "/") == desktop_dir().replace("\\", "/"),
       win5.dir_panel.fs.filePath(idx) if idx.isValid() else "(none)")
-check("齿轮图标比按钮小一圈", win5.btn_help.iconSize().width() == 20, win5.btn_help.iconSize().width())
+check("设置按钮是纯文字无图标", win5.btn_help.text() != "" and win5.btn_help.icon().isNull(),
+      (win5.btn_help.text(), win5.btn_help.icon().isNull()))
+check("撤销按钮无图标", win5.btn_undo.text() == "撤销" and win5.btn_undo.icon().isNull(),
+      (win5.btn_undo.text(), win5.btn_undo.icon().isNull()))
+check("规则组带下拉菜单", win5.rule_panel.btn_load.menu() is not None,
+      win5.rule_panel.btn_load.menu() is not None)
 win5.close()
 
 # ---------- 10. Qt 自带文案已中文化
