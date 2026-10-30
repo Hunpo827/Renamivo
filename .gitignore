@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+*.py[cod]
+build/
+dist/
+*.spec
+.pytest_cache/
+renamer/_buildid.py
+
+# 开发脚本产出的截图
+dev/*.png
+assets/icon_preview.png
+assets/ui/icons/_preview.png
+
+# 测试时生成的临时目录
+demo2/
+demo3/
