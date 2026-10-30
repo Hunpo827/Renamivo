@@ -8,7 +8,7 @@ APP_AUTHOR = ""
 # GitHub 仓库（owner/repo）。留空则「关于」里的跳转会显示为未配置。
 # 也可以在 %APPDATA%\BatchRenamer\config.json 里写 {"github_repo": "owner/repo"} 覆盖，
 # 这样不用重新打包。
-GITHUB_REPO = ""
+GITHUB_REPO = "Hunpo827/Renamivo"
 
 GITHUB_HOME = "https://github.com/{repo}"
 GITHUB_LATEST = "https://github.com/{repo}/releases/latest"
