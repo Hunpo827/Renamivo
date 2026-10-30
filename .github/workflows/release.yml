@@ -45,7 +45,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: dist/Renamivo-Single.exe
-          name: 易名匣 Renamivo ${{ github.ref_name }}
+          name: Renamivo ${{ github.ref_name }}
           body_path: packaging/release-notes.md
           draft: false
           make_latest: true
