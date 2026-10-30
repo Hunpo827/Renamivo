@@ -107,6 +107,7 @@ _EN: dict[str, str] = {
     "刷新": "Refresh",
 
     "撤销改名": "Undo rename",
+    "撤销": "Undo",
     "就绪": "Ready",
     "未打开文件夹": "No folder opened",
     "关于本软件": "About",

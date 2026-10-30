@@ -465,8 +465,8 @@ class RulePanel(QWidget):
         self.btn_load.setText(tr("规则组"))
         self.btn_load.setObjectName("flatBtn")
         self.btn_load.setToolTip(tr("载入或删除保存过的规则组"))
-        # 不挂 setMenu：InstantPopup 会在右侧画一个小三角，这里用点击弹菜单代替
-        self.btn_load.clicked.connect(self._show_preset_menu)
+        self.btn_load.setPopupMode(QToolButton.InstantPopup)
+        self.btn_load.setMenu(self._build_preset_menu())
         h.addWidget(self.btn_load)
 
         outer.addWidget(bar)
@@ -640,12 +640,8 @@ class RulePanel(QWidget):
         menu.addAction(tr("从文件导入…")).triggered.connect(self._import_preset)
         return menu
 
-    def _show_preset_menu(self) -> None:
-        menu = self._build_preset_menu()
-        menu.exec(self.btn_load.mapToGlobal(QPoint(0, self.btn_load.height() + 2)))
-
     def _refresh_preset_menu(self) -> None:
-        pass          # 菜单每次点击时现建，这里不用做任何事
+        self.btn_load.setMenu(self._build_preset_menu())
 
     @staticmethod
     def _safe_name(name: str) -> str:

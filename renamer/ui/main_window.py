@@ -411,21 +411,14 @@ class MainWindow(QMainWindow):
         t.addWidget(self.lb_path, 1)
 
         self.btn_undo = QToolButton()
-        self.btn_undo.setText(tr("撤销改名"))
-        self.btn_undo.setIcon(icon("undo"))
-        self.btn_undo.setIconSize(QSize(16, 16))
-        self.btn_undo.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+        self.btn_undo.setText(tr("撤销"))
         self.btn_undo.setPopupMode(QToolButton.InstantPopup)
         self.btn_undo.setToolTip(tr("撤销改名"))
         t.addWidget(self.btn_undo)
 
         self.btn_help = QToolButton()
-        self.btn_help.setIcon(icon("gear"))
-        self.btn_help.setIconSize(QSize(20, 20))
-        self.btn_help.setFixedSize(32, 30)
+        self.btn_help.setText(tr("设置"))
         self.btn_help.setToolTip(tr("设置"))
-        # 用 clicked 手动弹出菜单：InstantPopup 会在按钮右下角挤一个小箭头，
-        # 32px 的方按钮放不下，箭头会画到窗口外面去。
         self.btn_help.clicked.connect(self._show_help_menu)
         t.addWidget(self.btn_help)
 
