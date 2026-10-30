@@ -9,7 +9,7 @@ from datetime import datetime
 from PySide6.QtCore import (QDir, QModelIndex, QPoint, QSettings, QSize, Qt,
                             QTimer, Signal)
 from PySide6.QtGui import QAction, QIcon, QKeySequence
-from PySide6.QtWidgets import (QAbstractItemView, QCheckBox, QComboBox,
+from PySide6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox, QComboBox,
                                QFileSystemModel, QFrame, QHBoxLayout, QLabel,
                                QLineEdit, QMainWindow, QMenu, QMessageBox,
                                QPushButton, QSplitter, QTableView, QToolButton,
@@ -512,6 +512,11 @@ class MainWindow(QMainWindow):
     def set_language(self, lang: str) -> None:
         self.settings.setValue("language", lang)
         set_language(resolve_language(lang))
+        # 应用名是进程级的，启动时设一次就固定了；切语言必须同步改，
+        # 否则任务栏、窗口列表里还挂着中文名。
+        name = meta.app_display_name()
+        QApplication.setApplicationName(name)
+        QApplication.setApplicationDisplayName(name)
         self.restart_requested.emit()
 
     def show_about(self) -> None:

@@ -95,6 +95,7 @@ class Controller:
             new.rule_panel.set_rules(rules)
         self.win = new
         new.show()
+        old.hide()
         old.close()
         old.deleteLater()
 
@@ -112,7 +113,7 @@ def main() -> int:
         i18n.set_language(os.environ["SELFTEST_LANG"])
     install_qt_translations(app, i18n.current_language())
 
-    display = meta.APP_NAME if i18n.current_language() == "zh" else meta.APP_NAME_EN
+    display = meta.app_display_name()
     app.setApplicationName(display)
     app.setOrganizationName(APP_ORG)
     app.setApplicationDisplayName(display)
