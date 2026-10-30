@@ -2,7 +2,7 @@
 
 APP_NAME = "易名匣"
 APP_NAME_EN = "Renamivo"
-APP_VERSION = "1.3.3"
+APP_VERSION = "1.3.4"
 APP_AUTHOR = ""
 
 # GitHub 仓库（owner/repo）。留空则「关于」里的跳转会显示为未配置。

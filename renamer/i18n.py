@@ -118,6 +118,7 @@ _EN: dict[str, str] = {
     "语言": "Language",
     "帮助": "Help",
     "更多": "More",
+    "关于、更新与界面语言": "About, updates and language",
     "设置": "Settings",
 
     # ---- 目录树

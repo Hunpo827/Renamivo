@@ -417,8 +417,8 @@ class MainWindow(QMainWindow):
         t.addWidget(self.btn_undo)
 
         self.btn_help = QToolButton()
-        self.btn_help.setText(tr("设置"))
-        self.btn_help.setToolTip(tr("设置"))
+        self.btn_help.setText(tr("更多"))
+        self.btn_help.setToolTip(tr("关于、更新与界面语言"))
         self.btn_help.clicked.connect(self._show_help_menu)
         t.addWidget(self.btn_help)
 

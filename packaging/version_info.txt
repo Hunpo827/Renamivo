@@ -1,7 +1,7 @@
 VSVersionInfo(
   ffi=FixedFileInfo(
-    filevers=(1, 3, 3, 0),
-    prodvers=(1, 3, 3, 0),
+    filevers=(1, 3, 4, 0),
+    prodvers=(1, 3, 4, 0),
     mask=0x3f, flags=0x0, OS=0x40004, fileType=0x1, subtype=0x0,
     date=(0, 0)
   ),
@@ -10,11 +10,11 @@ VSVersionInfo(
       StringTable('040904B0', [
         StringStruct('CompanyName', ''),
         StringStruct('FileDescription', '易名匣 Renamivo - batch file renamer'),
-        StringStruct('FileVersion', '1.3.3.0'),
+        StringStruct('FileVersion', '1.3.4.0'),
         StringStruct('InternalName', 'BatchRenamer'),
         StringStruct('OriginalFilename', 'Renamivo.exe'),
         StringStruct('ProductName', '易名匣 / Renamivo'),
-        StringStruct('ProductVersion', '1.3.3.0')
+        StringStruct('ProductVersion', '1.3.4.0')
       ])
     ]),
     VarFileInfo([VarStruct('Translation', [1033, 1200])])
