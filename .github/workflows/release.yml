@@ -1,0 +1,51 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install PySide6 pyinstaller pytest
+
+      - name: Generate build id
+        shell: pwsh
+        run: |
+          "BUILD_ID = `"${{ github.sha }}`"" | Out-File -Encoding utf8 renamer/_buildid.py
+          Get-Content renamer/_buildid.py
+
+      - name: Run tests
+        run: python -m pytest tests -q
+
+      - name: Build single-file exe
+        run: >
+          pyinstaller --noconfirm --clean --windowed --onefile
+          --name Renamivo-Single
+          --icon assets\icon.ico
+          --add-data "assets;assets"
+          --version-file packaging\version_info.txt
+          run.pyw
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/Renamivo-Single.exe
+          name: 易名匣 Renamivo ${{ github.ref_name }}
+          body_path: packaging/release-notes.md
+          draft: false
+          make_latest: true

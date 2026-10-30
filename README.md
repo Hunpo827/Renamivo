@@ -1,5 +1,8 @@
 # 易名匣 / Renamivo  v1.3.0
 
+[![Release](https://github.com/Hunpo827/Renamivo/actions/workflows/release.yml/badge.svg)](https://github.com/Hunpo827/Renamivo/actions/workflows/release.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 Windows 桌面端的批量文件改名工具。左边选目录、右边写规则、下面看预览，确认后才真正落盘。
 界面支持中英文，自动跟随系统语言。
 
@@ -161,7 +164,17 @@ batch-renamer/
 └─ demo/               示例文件，可以拿来试手
 ```
 
-## 十、构建
+## 十、构建与发版
+
+**发版走 GitHub Actions**：把 tag 推上去，GitHub 的 Windows 机器会自动跑测试、打包、创建 Release
+并附上 `Renamivo-Single.exe`（`.github/workflows/release.yml`）。国内网络往 GitHub 传 40+ MB 的
+exe 经常卡死，交给 CI 就不用本地传了。
+
+```cmd
+git tag v1.3.1 && git push origin v1.3.1
+```
+
+本地构建：
 
 ```cmd
 :: 跑测试
@@ -182,7 +195,7 @@ batch-renamer/
 :: 打包：单文件版（一个 exe，方便拷给别人）
 .venv\Scripts\pyinstaller.exe --noconfirm --clean --windowed --onefile ^
   --name Renamivo-Single --icon assets\icon.ico --add-data "assets;assets" ^
-  --version-file build\version_info.txt run.pyw
+  --version-file packaging\version_info.txt run.pyw
 ```
 
 两个版本的区别：
